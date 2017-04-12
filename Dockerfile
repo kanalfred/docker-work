@@ -7,15 +7,30 @@
 # 
 # Give docker user permission for local x11
 # xhost +local:docker
+# docker run --rm -it kanalfred/work mycli -h192.168.3.103 -uroot
 #
 #######################
 FROM ubuntu:16.04
 
+ADD run.sh /
 # mycli - mysql command line
 # http://mycli.net/
-RUN apt-get update && apt-get install -y mycli &&\
-    export LC_ALL=C.UTF-8 && export LANG=C.UTF-8
+RUN apt-get update && apt-get install -y mycli
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+#RUN set -xe \
+#&& export LC_ALL="C.UTF-8" \
+#&& export LANG="C.UTF-8"
+
+#RUN /run.sh
+#RUN echo 'export LC_ALL=C.UTF-8\r\n' >> /etc/profile.d/docker.sh
+#RUN echo 'export LANG=C.UTF-8\r\n' >> /etc/profile.d/docker.sh
+#RUN export LC_ALL=C.UTF-8 
+#RUN export LANG=C.UTF-8
 
 #USER developer
 #ENV HOME /home/developer
-CMD /bin/bash
+#ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/run.sh"]
+#CMD ["/run.sh"]
+#CMD /bin/bash 
