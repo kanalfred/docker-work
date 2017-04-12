@@ -13,7 +13,7 @@ FROM ubuntu:16.04
 
 # mycli - mysql command line
 # http://mycli.net/
-RUN apt-get install -y mycli
+RUN apt-get update && apt-get install -y mycli
 
 #USER developer
 #ENV HOME /home/developer
