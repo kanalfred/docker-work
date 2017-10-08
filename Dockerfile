@@ -15,7 +15,7 @@ FROM ubuntu:16.04
 #ADD run.sh /
 # mycli - mysql command line
 # http://mycli.net/
-RUN apt-get update && apt-get install -y mycli sudo vim
+RUN apt-get update && apt-get install -y mycli sudo vim openssh-client rsync
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 #RUN set -xe \
