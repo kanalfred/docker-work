@@ -9,29 +9,106 @@
 # xhost +local:docker
 # docker run --rm -it kanalfred/work mycli -h192.168.3.103 -uroot
 #
+# Run:
+#   docker run -h work --name work -p 2222:22 -d kanalfred/work
+#
+# Build:
+#     docker build -t local/work .
+#
 #######################
 FROM ubuntu:16.04
+
+ENV TERM=xterm
+# mycli - mysql command line require lang env
+ENV LC_ALL C.UTF-8
+ENV LANG C.UTF-8
+
+# Add files
+ADD container-files/etc /etc 
+
+RUN apt-get update \
+    && apt-get install -y sudo \
+        # system
+        software-properties-common \
+        supervisor \
+        # util
+        iputils-ping \
+        apt-transport-https \
+        ca-certificates \
+        rsync \
+        wget \
+        curl \
+        sendmail \
+        # service
+        openssh-client openssh-server \
+        # development
+        tmux \
+        mycli \
+        vim \
+        git \
+        jq \
+        python python-pip\
+        libxml2-utils
+
+RUN \
+    # user
+    useradd -ms /bin/bash -u 1000 alfred \
+    # delete password after create new user to unlock the new account accesable from ssh
+    # "!" mean the account locked
+    # /etc/shadow - alfred:!:12121:0:99999:7:::
+    && passwd -d alfred \
+    && usermod -a -G root alfred \
+    && usermod -aG sudo alfred \
+    && echo  "alfred ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+
+    # password
+    #RUN echo "root:25538270" | chpasswd
+    #RUN echo "alfred:25538270" | chpasswd
+    #RUN cat /root/root.txt | chpasswd
+
+ADD container-files/alfred/.ssh /home/alfred/.ssh
+ADD container-files/alfred/.ssh /root/.ssh
+
+    # setup ssh
+#   add ssh config /etc/ssh/sshd_config
+
+# setup vim, tmux and bachrc
+
+# ssh alice
+
+# install docker
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository
+
+# install aws cli
+# set up aws profile
+
+# npm node js manager
+
+# radius cli
 
 #ADD run.sh /
 # mycli - mysql command line
 # http://mycli.net/
-RUN apt-get update && apt-get install -y mycli sudo vim openssh-client rsync
-ENV LC_ALL C.UTF-8
-ENV LANG C.UTF-8
 #RUN set -xe \
 #&& export LC_ALL="C.UTF-8" \
 #&& export LANG="C.UTF-8"
 
-RUN groupadd -g 1000 -r alfred \
-    && useradd -u 1000 -r -g alfred alfred \
-    && usermod -a -G root alfred \
-    && usermod -aG sudo alfred && \
-    echo  "alfred ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers 
-#RUN /run.sh
-#RUN echo 'export LC_ALL=C.UTF-8\r\n' >> /etc/profile.d/docker.sh
-#RUN echo 'export LANG=C.UTF-8\r\n' >> /etc/profile.d/docker.sh
-#RUN export LC_ALL=C.UTF-8 
-#RUN export LANG=C.UTF-8
+RUN \
+    # ssh key file permission
+    chmod 700 /home/alfred/.ssh && \
+    chmod 600 /home/alfred/.ssh/authorized_keys && \
+    chown -R alfred:alfred /home/alfred/.ssh &&\
+
+    chmod 700 /root/.ssh && \
+    chmod 600 /root/.ssh/authorized_keys && \
+    chown -R root:root /root/.ssh &&\
+
+    # sshd
+    sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && \
+    sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && \
+    #sed -i "s/#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config && \
+    echo 'PermitEmptyPasswords yes' >> /etc/ssh/sshd_config
 
 #USER developer
 #ENV HOME /home/developer
@@ -39,3 +116,6 @@ RUN groupadd -g 1000 -r alfred \
 #ENTRYPOINT ["/run.sh"]
 #CMD ["/run.sh"]
 #CMD /bin/bash 
+EXPOSE 22
+
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
