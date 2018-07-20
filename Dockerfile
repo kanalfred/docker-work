@@ -108,7 +108,9 @@ RUN \
     sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && \
     sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && \
     #sed -i "s/#PasswordAuthentication.*/PasswordAuthentication no/g" /etc/ssh/sshd_config && \
-    echo 'PermitEmptyPasswords yes' >> /etc/ssh/sshd_config
+    echo 'PermitEmptyPasswords yes' >> /etc/ssh/sshd_config && \
+    # SSH to bind port 8000 on the wildcard address
+    echo 'GatewayPorts yes' >> /etc/ssh/sshd_config
 
 #USER developer
 #ENV HOME /home/developer
