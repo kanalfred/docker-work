@@ -26,6 +26,7 @@ ENV LANG C.UTF-8
 # Add files
 ADD container-files/etc /etc 
 
+# Packages
 RUN apt-get update \
     && apt-get install -y sudo \
         # system
@@ -47,9 +48,20 @@ RUN apt-get update \
         vim \
         git \
         jq \
-        python python-pip\
+        python python-pip \
+        mysql-client \
         libxml2-utils
 
+# Docker
+RUN \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository \
+    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) \
+    stable" && \
+    apt-get update && apt-get install -y docker-ce
+
+# Setup
 RUN \
     # user
     useradd -ms /bin/bash -u 1000 alfred \
@@ -111,6 +123,8 @@ RUN \
     echo 'PermitEmptyPasswords yes' >> /etc/ssh/sshd_config && \
     # SSH to bind port 8000 on the wildcard address
     echo 'GatewayPorts yes' >> /etc/ssh/sshd_config
+
+    # vim
 
 #USER developer
 #ENV HOME /home/developer
