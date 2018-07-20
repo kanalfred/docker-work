@@ -46,6 +46,7 @@ RUN apt-get update \
         tmux \
         mycli \
         vim \
+        ctags \
         git \
         jq \
         python python-pip \
@@ -124,7 +125,15 @@ RUN \
     # SSH to bind port 8000 on the wildcard address
     echo 'GatewayPorts yes' >> /etc/ssh/sshd_config
 
+USER alfred
+RUN \
     # vim
+    cd ~/ && \
+    git clone https://github.com/kanalfred/vim.git && \
+    mv vim .vim && ln -s ~/.vim/vimrc ~/.vimrc && \
+    cd ~/.vim && \
+    git submodule init && \
+    git submodule update 
 
 #USER developer
 #ENV HOME /home/developer
