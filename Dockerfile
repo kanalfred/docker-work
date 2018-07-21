@@ -110,11 +110,6 @@ ADD container-files/alfred/.ssh /root/.ssh
 # radius cli
 
 #ADD run.sh /
-# mycli - mysql command line
-# http://mycli.net/
-#RUN set -xe \
-#&& export LC_ALL="C.UTF-8" \
-#&& export LANG="C.UTF-8"
 
 RUN \
     # ssh key file permission
@@ -142,7 +137,14 @@ RUN \
     mv vim .vim && ln -s ~/.vim/vimrc ~/.vimrc && \
     cd ~/.vim && \
     git submodule init && \
-    git submodule update 
+    git submodule update && \
+
+    # tmux
+    cd ~/ && \
+    ln -s ~/.vim/tmux.conf ~/.tmux.conf && \
+
+    # aws cli
+    pip install awscli --upgrade --user
 
 USER root
 
