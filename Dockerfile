@@ -20,8 +20,17 @@ FROM ubuntu:16.04
 
 ENV TERM=xterm
 # mycli - mysql command line require lang env
-ENV LC_ALL C.UTF-8
-ENV LANG C.UTF-8
+RUN locale-gen en_CA.UTF-8  
+ENV LANG en_CA.UTF-8  
+ENV LANGUAGE en_CA:en  
+ENV LC_ALL en_CA.UTF-8
+
+#ENV LC_ALL C.UTF-8
+#ENV LANG C.UTF-8
+ENV TERM=xterm
+
+#ENV LANG=en_US.UTF-8
+#ENV LANGUAGE=en_US.UTF-8
 
 # Add files
 ADD container-files/etc /etc 
@@ -134,6 +143,8 @@ RUN \
     cd ~/.vim && \
     git submodule init && \
     git submodule update 
+
+USER root
 
 #USER developer
 #ENV HOME /home/developer
