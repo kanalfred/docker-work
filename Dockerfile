@@ -19,11 +19,6 @@
 FROM ubuntu:16.04
 
 ENV TERM=xterm
-# mycli - mysql command line require lang env
-RUN locale-gen en_CA.UTF-8  
-ENV LANG en_CA.UTF-8  
-ENV LANGUAGE en_CA:en  
-ENV LC_ALL en_CA.UTF-8
 
 #ENV LC_ALL C.UTF-8
 #ENV LANG C.UTF-8
@@ -41,6 +36,7 @@ RUN apt-get update \
         # system
         software-properties-common \
         supervisor \
+        locales \
         # util
         iputils-ping \
         apt-transport-https \
@@ -61,6 +57,12 @@ RUN apt-get update \
         python python-pip \
         mysql-client \
         libxml2-utils
+
+# mycli - mysql command line require lang env
+RUN locale-gen en_CA.UTF-8  
+ENV LANG en_CA.UTF-8  
+ENV LANGUAGE en_CA:en  
+ENV LC_ALL en_CA.UTF-8
 
 # Docker
 RUN \
