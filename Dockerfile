@@ -14,6 +14,12 @@
 #
 # Build:
 #     docker build -t local/work .
+# Docker:
+#     Default coreos docker group id : 233
+#     get host docker group id :
+#       stat -c '%g' /var/run/docker.sock
+#     Update docker group Id to host docker group id for :
+#        groupmod -g 3000 {host docker group id}
 #
 #######################
 FROM ubuntu:16.04
@@ -59,6 +65,7 @@ ENV LC_ALL en_CA.UTF-8
 
 # Docker
 RUN \
+    groupadd -g 233 docker && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
