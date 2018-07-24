@@ -10,7 +10,7 @@
 # docker run --rm -it kanalfred/work mycli -h192.168.3.103 -uroot
 #
 # Run:
-#   docker run -h work --name work -p 2222:22 -d kanalfred/work
+#   docker run --name work -h work -p 2222:22 -v /data:/data -v /var/run/docker.sock:/var/run/docker.sock -d kanalfred/work
 #
 # Build:
 #     docker build -t local/work .
@@ -19,13 +19,6 @@
 FROM ubuntu:16.04
 
 ENV TERM=xterm
-
-#ENV LC_ALL C.UTF-8
-#ENV LANG C.UTF-8
-ENV TERM=xterm
-
-#ENV LANG=en_US.UTF-8
-#ENV LANGUAGE=en_US.UTF-8
 
 # Add files
 ADD container-files/etc /etc 
@@ -83,11 +76,12 @@ RUN \
     && passwd -d alfred \
     && usermod -a -G root alfred \
     && usermod -aG sudo alfred \
-    && echo  "alfred ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+    && echo  "alfred ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers \
+    && usermod -aG docker alfred
 
     # password
-    #RUN echo "root:25538270" | chpasswd
-    #RUN echo "alfred:25538270" | chpasswd
+    #RUN echo "root:xxxxx" | chpasswd
+    #RUN echo "alfred:xxxxx" | chpasswd
     #RUN cat /root/root.txt | chpasswd
 
 ADD container-files/alfred/.ssh /home/alfred/.ssh
