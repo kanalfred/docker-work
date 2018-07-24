@@ -69,7 +69,7 @@ RUN \
 # Setup
 RUN \
     # user
-    useradd -ms /bin/bash -u 1000 alfred \
+    useradd -ms /bin/bash -u 500 alfred \
     # delete password after create new user to unlock the new account accesable from ssh
     # "!" mean the account locked
     # /etc/shadow - alfred:!:12121:0:99999:7:::
