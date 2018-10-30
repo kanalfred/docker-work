@@ -87,6 +87,8 @@ RUN \
     && usermod -aG docker alfred
 
     # password
+    # test if file exist /user_config/user_p.txt
+    # RUN cat /user_config/user_p.txt | chpasswd
     #RUN echo "root:xxxxx" | chpasswd
     #RUN echo "alfred:xxxxx" | chpasswd
     #RUN cat /root/root.txt | chpasswd
