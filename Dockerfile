@@ -147,6 +147,13 @@ RUN \
     # tmux
     cd ~/ && \
     ln -s ~/.vim/tmux.conf ~/.tmux.conf && \
+    # tmux plugins
+    git clone https://github.com/tmux-plugins/tmux-resurrect ~/tmux-resurrect && \
+    echo 'run-shell ~/tmux-resurrect/resurrect.tmux' >> ~/.tmux.conf && \
+
+    # bashrc
+    # stop ctrl s abnormal action
+    echo 'stty -ixon' >> ~/.bashrc && \
 
     # aws cli
     pip install awscli --upgrade --user
