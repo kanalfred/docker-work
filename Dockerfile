@@ -144,6 +144,13 @@ RUN \
     git submodule init && \
     git submodule update && \
 
+    # symbolic links
+    ln -s /data/work/workspace ~/workspace && \
+
+    # git config
+    git config --global user.name "kanalfred@gmail.com" && \
+    git config --global user.name "Alfred Kan" && \
+
     # tmux
     cd ~/ && \
     ln -s ~/.vim/tmux.conf ~/.tmux.conf && \
