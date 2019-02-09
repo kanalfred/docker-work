@@ -1,0 +1,28 @@
+# https://coreos.com/os/docs/latest/getting-started-with-systemd.html
+# Add this file to /etc/systemd/system/
+# ln -s /data/launch/work/work.service /etc/systemd/system/work.service
+# sudo systemctl enable /etc/systemd/system/work.service
+# sudo systemctl start work.service
+# sudo systemctl daemon-reload
+# systemctl list-units | grep service
+# container passowrd - please update /data/work/user_config/user_p.txt
+# https://serverfault.com/questions/622573/how-to-start-and-stop-a-systemd-unit-with-another
+[Unit]
+Description=work
+After=docker.service
+Requires=docker.service
+#Wants=work-post.service
+#Before=work-post.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill work
+ExecStartPre=-/usr/bin/docker rm work
+ExecStartPre=/usr/bin/docker pull kanalfred/work
+ExecStart=/usr/bin/docker run --name work -p 2222:22 -h work -v /data:/data -v /var/run/docker.sock:/var/run/docker.sock kanalfred/work
+ExecStartPost=/bin/sh -c 'sleep 1'
+ExecStartPost=/usr/bin/docker exec work sh -c "cat /data/work/user_config/user_p.txt | chpasswd"
+ExecStop=/usr/bin/docker stop work
+
+[Install]
+WantedBy=multi-user.target

@@ -148,7 +148,7 @@ RUN \
     ln -s /data/work/workspace ~/workspace && \
 
     # git config
-    git config --global user.name "kanalfred@gmail.com" && \
+    git config --global user.email "kanalfred@gmail.com" && \
     git config --global user.name "Alfred Kan" && \
 
     # tmux
