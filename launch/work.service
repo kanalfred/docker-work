@@ -20,7 +20,8 @@ ExecStartPre=-/usr/bin/docker kill work
 ExecStartPre=-/usr/bin/docker rm work
 ExecStartPre=/usr/bin/docker pull kanalfred/work
 ExecStart=/usr/bin/docker run --name work -p 2222:22 -h work -v /data:/data -v /var/run/docker.sock:/var/run/docker.sock kanalfred/work
-ExecStartPost=/bin/sh -c 'sleep 1'
+# ExecStartPost=/bin/sh -c 'sleep 1'
+ExecStartPost=/bin/sh -c 'while ! docker ps | grep 'kanalfred/work'; do sleep 1; echo "looping ..."; done'
 ExecStartPost=/usr/bin/docker exec work sh -c "cat /data/work/user_config/user_p.txt | chpasswd"
 ExecStop=/usr/bin/docker stop work
 
