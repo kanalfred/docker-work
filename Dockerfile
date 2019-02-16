@@ -44,6 +44,7 @@ RUN apt-get update \
         wget \
         curl \
         sendmail \
+        bash-completion \
         # service
         openssh-client openssh-server \
         # development
