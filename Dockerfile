@@ -53,6 +53,7 @@ RUN apt-get update \
         vim \
         ctags \
         git \
+        subversion \
         jq \
         python python-pip \
         mysql-client \
