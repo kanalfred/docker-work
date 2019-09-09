@@ -66,7 +66,7 @@ ENV LANGUAGE en_CA:en
 ENV LC_ALL en_CA.UTF-8
 
 # Setup & install repo packages
-RUN \
+RUN echo "Setup & install repo packages" && \
     # docker
     groupadd -g 233 docker && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
@@ -80,7 +80,7 @@ RUN \
     apt-get update && apt-get install -y docker-ce kubectl
 
 # User Setup
-RUN \
+RUN echo "User Setup" && \
     # user
     useradd -ms /bin/bash -u 500 alfred \
     # delete password after create new user to unlock the new account accesable from ssh
@@ -123,7 +123,7 @@ ADD container-files/alfred/.ssh /root/.ssh
 #ADD run.sh /
 
 # ssh 
-RUN \
+RUN echo "SSH setup" && \
     # ssh key file permission
     chmod 700 /home/alfred/.ssh && \
     chmod 600 /home/alfred/.ssh/authorized_keys && \
@@ -143,7 +143,7 @@ RUN \
 
 # workspace
 USER alfred
-RUN \
+RUN echo "Workspace setup" && \
     # vim
     cd ~/ && \
     git clone https://github.com/kanalfred/vim.git && \
