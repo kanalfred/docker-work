@@ -65,17 +65,21 @@ ENV LANG en_CA.UTF-8
 ENV LANGUAGE en_CA:en  
 ENV LC_ALL en_CA.UTF-8
 
-# Docker
+# Setup & install repo packages
 RUN \
+    # docker
     groupadd -g 233 docker && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable" && \
-    apt-get update && apt-get install -y docker-ce
+    # kubectl
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add - && \
+    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list && \
+    apt-get update && apt-get install -y docker-ce kubectl
 
-# Setup
+# User Setup
 RUN \
     # user
     useradd -ms /bin/bash -u 500 alfred \
@@ -118,6 +122,7 @@ ADD container-files/alfred/.ssh /root/.ssh
 
 #ADD run.sh /
 
+# ssh 
 RUN \
     # ssh key file permission
     chmod 700 /home/alfred/.ssh && \
@@ -136,6 +141,7 @@ RUN \
     # SSH to bind port 8000 on the wildcard address
     echo 'GatewayPorts yes' >> /etc/ssh/sshd_config
 
+# workspace
 USER alfred
 RUN \
     # vim
