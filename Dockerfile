@@ -80,7 +80,7 @@ RUN echo "Setup & install repo packages" && \
     apt-get update && apt-get install -y docker-ce kubectl
 
 # User Setup
-RUN echo "User Setup" && \
+RUN \
     # user
     useradd -ms /bin/bash -u 500 alfred \
     # delete password after create new user to unlock the new account accesable from ssh
@@ -91,7 +91,6 @@ RUN echo "User Setup" && \
     && usermod -aG sudo alfred \
     && echo  "alfred ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers \
     && usermod -aG docker alfred
-
     # password
     # test if file exist /user_config/user_p.txt
     # RUN cat /user_config/user_p.txt | chpasswd
@@ -123,12 +122,13 @@ ADD container-files/alfred/.ssh /root/.ssh
 #ADD run.sh /
 
 # ssh 
-RUN echo "SSH setup" && \
+RUN \
     # ssh key file permission
+    # alfred
     chmod 700 /home/alfred/.ssh && \
     chmod 600 /home/alfred/.ssh/authorized_keys && \
     chown -R alfred:alfred /home/alfred/.ssh &&\
-
+    # root
     chmod 700 /root/.ssh && \
     chmod 600 /root/.ssh/authorized_keys && \
     chown -R root:root /root/.ssh &&\
@@ -143,7 +143,7 @@ RUN echo "SSH setup" && \
 
 # workspace
 USER alfred
-RUN echo "Workspace setup" && \
+RUN \
     # vim
     cd ~/ && \
     git clone https://github.com/kanalfred/vim.git && \
