@@ -171,7 +171,13 @@ RUN \
     echo 'stty -ixon' >> ~/.bashrc && \
 
     # aws cli
-    pip install awscli --upgrade --user
+    pip install awscli --upgrade --user && \
+
+    # digitalocean cli
+    cd ~/ && \
+    curl -sL https://github.com/digitalocean/doctl/releases/download/v1.31.2/doctl-1.31.2-linux-amd64.tar.gz | tar -xzv && \
+    sudo mv ~/doctl /usr/local/bin
+
 
 USER root
 
