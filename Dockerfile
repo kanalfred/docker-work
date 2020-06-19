@@ -172,6 +172,9 @@ RUN \
 
     # aws cli
     pip install awscli --upgrade --user && \
+    
+    # sls
+    curl -o- -L https://slss.io/install | bash && \
 
     # digitalocean cli
     cd ~/ && \
