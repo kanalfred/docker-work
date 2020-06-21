@@ -47,6 +47,9 @@ RUN apt-get update \
         bash-completion \
         # service
         openssh-client openssh-server \
+        # sls
+        nodejs \
+        npm \
         # development
         tmux \
         mycli \
