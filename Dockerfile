@@ -59,6 +59,7 @@ RUN apt-get update \
         subversion \
         jq \
         python python-pip \
+        python3-pip \
         mysql-client \
         libxml2-utils
 
@@ -175,6 +176,9 @@ RUN \
 
     # aws cli
     pip install awscli --upgrade --user && \
+    
+    # python virtualenv
+    pip3 install virtualenv && \
     
     # sls
     curl -o- -L https://slss.io/install | bash && \
