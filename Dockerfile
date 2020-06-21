@@ -177,7 +177,11 @@ RUN \
     # aws cli
     pip install awscli --upgrade --user && \
     
-    # python virtualenv
+    # python3.7
+    sudo add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && apt-get install -y python3.7 && \
+    
+    # virtualenv
     pip3 install virtualenv && \
     
     # sls
