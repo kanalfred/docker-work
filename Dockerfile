@@ -179,7 +179,7 @@ RUN \
     
     # python3.7
     sudo add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && apt-get install -y python3.7 && \
+    sudo apt-get update && sudo apt-get install -y python3.7 && \
     
     # virtualenv
     pip3 install virtualenv && \
