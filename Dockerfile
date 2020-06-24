@@ -182,7 +182,7 @@ RUN \
     sudo apt-get update && sudo apt-get install -y python3.7 && \
     
     # virtualenv
-    pip3 install virtualenv && \
+    sudo pip3 install virtualenv && \
     
     # sls
     curl -o- -L https://slss.io/install | bash && \
