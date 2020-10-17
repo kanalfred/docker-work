@@ -59,6 +59,7 @@ RUN apt-get update \
         subversion \
         jq \
         ansible \
+        maven \
         python python-pip \
         python3-pip \
         mysql-client \
